@@ -3,6 +3,9 @@ import "./App.css";
 import { fetchContacts, createContact, updateContact, deleteContact, toggleBookmark } from "./api";
 import ContactsList from "./components/ContactsList";
 import ContactForm from "./components/ContactForm";
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import { TextField, Button } from '@mui/material';
 
 function App() {
   const [contacts, setContacts] = useState([]);
@@ -11,41 +14,39 @@ function App() {
   const [page, setPage] = useState(1);
   const [label, setLabel] = useState("");
 
-  // Fetch contacts with pagination, search, and label filter
+  
   const getContacts = async () => {
     const data = await fetchContacts(page, search, label);
     setContacts(data);
   };
-  console.log("ff",contacts);
+
   
-  // Add new contact
   const addContact = async (contactData) => {
     await createContact(contactData);
-    getContacts(); // Refresh the contacts list
+    getContacts(); 
   };
 
-  // Delete a contact
+  
   const removeContact = async (contactId) => {
     await deleteContact(contactId);
-    getContacts(); // Refresh the contacts list
+    getContacts(); 
   };
 
-  // Update a contact
   const editContact = async (contactId, contactData) => {
     await updateContact(contactId, contactData);
-    getContacts(); // Refresh the contacts list
+    getContacts(); 
   };
 
-  // Toggle bookmark for a contact
+  
   const toggleContactBookmark = async (contactId) => {
     await toggleBookmark(contactId);
-    getContacts(); // Refresh the contacts list
+    getContacts(); 
   };
 
-  // Search and pagination
+  
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setPage(1); // Reset to the first page when searching
+    setPage(1); 
   };
 
   const handlePageChange = (newPage) => {
@@ -54,7 +55,7 @@ function App() {
 
   const handleLabelChange = (e) => {
     setLabel(e.target.value);
-    setPage(1); // Reset to the first page when changing label
+    setPage(1); 
   };
 
   useEffect(() => {
@@ -65,26 +66,36 @@ function App() {
     <div className="App">
       <h1>Contact Manager</h1>
 
-      <div className="controls">
-        <input
-          type="text"
-          placeholder="Search contacts"
+      <Stack
+        direction={{ xs: 'column', sm: 'column' }}
+        spacing={{ xs: 4, sm: 4, md: 4 }}
+        sx={{ marginBottom: 10 }}
+      >
+        <TextField 
+        
+          label="Search contacts"
+          variant="outlined"
           value={search}
           onChange={handleSearchChange}
+          fullWidth
         />
-         <button onClick={() => getContacts()}>Search</button>
-        <input
-          type="text"
-          placeholder="Filter by label"
+        <Button variant="contained" onClick={() => getContacts()}>
+          Search
+        </Button>
+        <TextField
+          label="Filter by label"
+          variant="outlined"
           value={label}
           onChange={handleLabelChange}
+          fullWidth
         />
-        <button onClick={() => setIsFormVisible(!isFormVisible)}>
+        <Button variant="contained" onClick={() => setIsFormVisible(!isFormVisible)}>
           {isFormVisible ? "Cancel" : "Add New Contact"}
-        </button>
-      </div>
+        </Button>
+      </Stack>
 
       {isFormVisible && <ContactForm onSubmit={addContact} />}
+
       <ContactsList
         contacts={contacts}
         onDelete={removeContact}

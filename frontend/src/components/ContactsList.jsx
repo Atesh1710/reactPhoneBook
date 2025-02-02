@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import ContactItem from "./ContactItem";
 
 function ContactsList({ contacts, onDelete, onUpdate, onBookmark, onPageChange }) {
@@ -8,7 +9,7 @@ function ContactsList({ contacts, onDelete, onUpdate, onBookmark, onPageChange }
   return (
     <div className="contacts-list">
       {contacts.map((contact) => (
-        <ContactItem
+        <ContactItem 
           key={contact.id}
           contact={contact}
           onDelete={onDelete}
@@ -18,8 +19,9 @@ function ContactsList({ contacts, onDelete, onUpdate, onBookmark, onPageChange }
       ))}
 
       <div className="pagination">
-        <button onClick={() => handlePageChange(-1)}>Previous</button>
-        <button onClick={() => handlePageChange(1)}>Next</button>
+        <Button  variant="contained" onClick={() => handlePageChange(-1)}>Previous</Button>
+        <Button  variant="contained" onClick={() => handlePageChange(1)}>Next</Button>
+       
       </div>
     </div>
   );

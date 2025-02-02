@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
+import { TextField } from "@mui/material";
 function ContactItem({ contact, onDelete, onUpdate, onBookmark }) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(contact);
@@ -13,11 +14,10 @@ function ContactItem({ contact, onDelete, onUpdate, onBookmark }) {
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
-    onUpdate(contact.id, formData);  // Pass the updated formData here
-    setIsEditing(false);  // Close the form after submitting
+    onUpdate(contact.id, formData);
+    setIsEditing(false);
   };
 
-  // Ensure formData is reset if contact changes, to prevent stale data issues
   useState(() => {
     setFormData(contact);
   }, [contact]);
@@ -26,37 +26,42 @@ function ContactItem({ contact, onDelete, onUpdate, onBookmark }) {
     <div className="contact-item">
       {isEditing ? (
         <form onSubmit={handleEditSubmit}>
-          <input
+          <TextField
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
           />
-          <input
+          <TextField
             type="text"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
           />
-          <input
+          <TextField
             type="text"
             name="label"
             value={formData.label}
             onChange={handleChange}
           />
-          <input
+
+          <TextField
             type="text"
             name="address"
             value={formData.address}
             onChange={handleChange}
           />
-          <input
+
+          <TextField
             type="text"
             name="avatar"
             value={formData.avatar}
             onChange={handleChange}
           />
-          <button type="submit">Save</button>
+
+          <Button type="submit" variant="contained">
+            Save
+          </Button>
         </form>
       ) : (
         <>
@@ -64,12 +69,15 @@ function ContactItem({ contact, onDelete, onUpdate, onBookmark }) {
           <p>{contact.name}</p>
           <p>{contact.phone}</p>
           <p>{contact.label}</p>
-          <Button variant="contained" onClick={() => onDelete(contact.id)}>Delete</Button>
-          <Button variant="contained" onClick={() => setIsEditing(true)}>Edit</Button>
-           
-          <button onClick={() => onBookmark(contact.id)}>
+          <Button variant="contained" onClick={() => onDelete(contact.id)}>
+            Delete
+          </Button>
+          <Button variant="contained" onClick={() => setIsEditing(true)}>
+            Edit
+          </Button>
+          <Button variant="contained" onClick={() => onBookmark(contact.id)}>
             {contact.bookmarked ? "Unbookmark" : "Bookmark"}
-          </button>
+          </Button>
         </>
       )}
     </div>

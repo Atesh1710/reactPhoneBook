@@ -1,4 +1,5 @@
-import  { useState } from "react";
+import { useState } from "react";
+import { Container, TextField, Button, Grid, Paper, Box } from "@mui/material";
 
 function ContactForm({ onSubmit }) {
   const [formData, setFormData] = useState({
@@ -31,46 +32,90 @@ function ContactForm({ onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="name"
-        placeholder="Name"
-        value={formData.name}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="phone"
-        placeholder="Phone"
-        value={formData.phone}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="label"
-        placeholder="Label"
-        value={formData.label}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="address"
-        placeholder="Address"
-        value={formData.address}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="avatar"
-        placeholder="Avatar URL"
-        value={formData.avatar}
-        onChange={handleChange}
-      />
-      <button type="submit">Add Contact</button>
-    </form>
+    <Box sx={{ width: '100%', padding: 3 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Paper elevation={3} sx={{ padding: 3 }}>
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    id="name"
+                    label="Name"
+                    variant="standard"
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    fullWidth
+                    required
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    id="phone"
+                    label="Phone"
+                    variant="standard"
+                    type="text"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    fullWidth
+                    required
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    id="label"
+                    label="Label"
+                    variant="standard"
+                    type="text"
+                    name="label"
+                    value={formData.label}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    id="address"
+                    label="Address"
+                    variant="standard"
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    id="avatar"
+                    label="Avatar URL"
+                    variant="standard"
+                    type="text"
+                    name="avatar"
+                    value={formData.avatar}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Button type="submit" variant="contained" color="primary" fullWidth>
+                    Add Contact
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Paper>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
 
