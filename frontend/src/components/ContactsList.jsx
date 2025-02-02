@@ -1,9 +1,10 @@
+
 import { Button } from "@mui/material";
 import ContactItem from "./ContactItem";
 
 function ContactsList({ contacts, onDelete, onUpdate, onBookmark, onPageChange }) {
   const handlePageChange = (direction) => {
-    onPageChange((prevPage) => prevPage + direction);
+    onPageChange(prev => prev + direction);
   };
 
   return (

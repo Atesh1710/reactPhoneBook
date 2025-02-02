@@ -7,7 +7,7 @@ function ContactForm({ onSubmit }) {
     phone: "",
     address: "",
     label: "",
-    avatar: "",
+    avatar: "https://static.vecteezy.com/system/resources/previews/008/442/086/non_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
     bookmarked: false,
   });
 
@@ -17,7 +17,7 @@ function ContactForm({ onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Ensure the form data is valid before submitting
+   
     if (formData.name && formData.phone) {
       onSubmit(formData);
       setFormData({
