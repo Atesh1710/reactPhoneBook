@@ -20,7 +20,7 @@ Once you've downloaded the repo, extract the files to your local machine.
 
 # Setup Backend Server
 Navigate to the backend directory:
-# cd reactPhoneBook-main/backend
+# cd reactPhoneBook/backend
 node server.js
 This will start the backend server and allow it to handle requests.
 
