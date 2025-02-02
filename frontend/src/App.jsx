@@ -1,26 +1,23 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+import { AppBar, Toolbar, Box, TextField, Button, Container, Stack, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { fetchContacts, createContact, updateContact, deleteContact, toggleBookmark } from "./api";
 import ContactsList from "./components/ContactsList";
 import ContactForm from "./components/ContactForm";
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import { TextField, Button } from '@mui/material';
 
 function App() {
   const [contacts, setContacts] = useState([]);
-  const [isFormVisible, setIsFormVisible] = useState(false);
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
   const [label, setLabel] = useState("");
+  const [page, setPage] = useState(1);
+  const [openDialog, setOpenDialog] = useState(false);
 
-  
+ 
   const getContacts = async () => {
     const data = await fetchContacts(page, search, label);
     setContacts(data);
   };
 
-  
+ 
   const addContact = async (contactData) => {
     await createContact(contactData);
     getContacts(); 
@@ -32,6 +29,7 @@ function App() {
     getContacts(); 
   };
 
+  
   const editContact = async (contactId, contactData) => {
     await updateContact(contactId, contactData);
     getContacts(); 
@@ -49,53 +47,82 @@ function App() {
     setPage(1); 
   };
 
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
-  };
-
+  
   const handleLabelChange = (e) => {
     setLabel(e.target.value);
     setPage(1); 
   };
 
+ 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+ 
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+ 
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+
+  
+  const handleFilterClick = () => {
+    getContacts(); 
+  };
+
+  
   useEffect(() => {
     getContacts();
   }, [page, search, label]);
 
   return (
     <div className="App">
-      <h1>Contact Manager</h1>
+      <AppBar position="static" sx={{ mb: 3 }}>
+        <Toolbar>
+          <Box sx={{ flexGrow: 1 }}>
+            <Button variant="text" color="inherit">Logo</Button>
+          </Box>
+          <TextField
+            label="Search contacts"
+            variant="outlined"
+            value={search}
+            onChange={handleSearchChange}
+            sx={{ mx: 2 }}
+            fullWidth
+          />
+          <Button variant="contained" color="primary" onClick={handleFilterClick}>
+            Filter
+          </Button>
+          <TextField
+            label="Filter by label"
+            variant="outlined"
+            value={label}
+            onChange={handleLabelChange}
+            sx={{ mx: 2 }}
+          />
+          <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+            Add New Contact
+          </Button>
+        </Toolbar>
+      </AppBar>
 
-      <Stack
-        direction={{ xs: 'column', sm: 'column' }}
-        spacing={{ xs: 4, sm: 4, md: 4 }}
-        sx={{ marginBottom: 10 }}
-      >
-        <TextField 
-        
-          label="Search contacts"
-          variant="outlined"
-          value={search}
-          onChange={handleSearchChange}
-          fullWidth
-        />
-        <Button variant="contained" onClick={() => getContacts()}>
-          Search
-        </Button>
-        <TextField
-          label="Filter by label"
-          variant="outlined"
-          value={label}
-          onChange={handleLabelChange}
-          fullWidth
-        />
-        <Button variant="contained" onClick={() => setIsFormVisible(!isFormVisible)}>
-          {isFormVisible ? "Cancel" : "Add New Contact"}
-        </Button>
-      </Stack>
+     
+      <Dialog open={openDialog} onClose={handleClose}>
+        <DialogTitle>Add New Contact</DialogTitle>
+        <DialogContent>
+          <ContactForm onSubmit={addContact} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-      {isFormVisible && <ContactForm onSubmit={addContact} />}
-
+      
       <ContactsList
         contacts={contacts}
         onDelete={removeContact}

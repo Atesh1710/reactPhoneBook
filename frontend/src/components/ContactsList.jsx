@@ -7,7 +7,7 @@ function ContactsList({ contacts, onDelete, onUpdate, onBookmark, onPageChange }
   };
 
   return (
-    <div className="contacts-list">
+    <div>
       {contacts.map((contact) => (
         <ContactItem 
           key={contact.id}
@@ -18,10 +18,9 @@ function ContactsList({ contacts, onDelete, onUpdate, onBookmark, onPageChange }
         />
       ))}
 
-      <div className="pagination">
-        <Button  variant="contained" onClick={() => handlePageChange(-1)}>Previous</Button>
-        <Button  variant="contained" onClick={() => handlePageChange(1)}>Next</Button>
-       
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+        <Button variant="contained" onClick={() => handlePageChange(-1)} sx={{ mr: 2 }}>Previous</Button>
+        <Button variant="contained" onClick={() => handlePageChange(1)}>Next</Button>
       </div>
     </div>
   );

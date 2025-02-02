@@ -1,86 +1,92 @@
 import { useState } from "react";
-import Button from "@mui/material/Button";
-import { TextField } from "@mui/material";
+import { Button, Box, Typography, IconButton, TextField } from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+
 function ContactItem({ contact, onDelete, onUpdate, onBookmark }) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(contact);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
-    onUpdate(contact.id, formData);
-    setIsEditing(false);
+    onUpdate(contact.id, formData); 
+    setIsEditing(false); 
   };
 
-  useState(() => {
-    setFormData(contact);
-  }, [contact]);
-
   return (
-    <div className="contact-item">
-      {isEditing ? (
-        <form onSubmit={handleEditSubmit}>
-          <TextField
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <TextField
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-          <TextField
-            type="text"
-            name="label"
-            value={formData.label}
-            onChange={handleChange}
-          />
+    <Box 
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        p: 2,
+        mb: 2,
+        border: '1px solid #ddd',
+        borderRadius: 1,
+        '&:hover': { boxShadow: 2 },
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <img src={contact.avatar} alt={contact.name} style={{ borderRadius: '50%', width: 40, height: 40, marginRight: 16 }} />
 
-          <TextField
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-          />
+        {!isEditing ? (
+          <>
+            <Typography variant="body1">{contact.name}</Typography>
+            <Typography variant="body2" sx={{ mx: 2 }}>{contact.phone}</Typography>
+          </>
+        ) : (
+          <>
+           
+            <TextField
+              label="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              variant="standard"
+              sx={{ width: 200, marginRight: 1 }}
+            />
+            <TextField
+              label="Phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              variant="standard"
+              sx={{ width: 150 }}
+            />
+          </>
+        )}
+      </Box>
 
-          <TextField
-            type="text"
-            name="avatar"
-            value={formData.avatar}
-            onChange={handleChange}
-          />
-
-          <Button type="submit" variant="contained">
-            Save
-          </Button>
-        </form>
-      ) : (
-        <>
-          <img src={contact.avatar} alt={contact.name} />
-          <p>{contact.name}</p>
-          <p>{contact.phone}</p>
-          <p>{contact.label}</p>
-          <Button variant="contained" onClick={() => onDelete(contact.id)}>
-            Delete
-          </Button>
-          <Button variant="contained" onClick={() => setIsEditing(true)}>
-            Edit
-          </Button>
-          <Button variant="contained" onClick={() => onBookmark(contact.id)}>
-            {contact.bookmarked ? "Unbookmark" : "Bookmark"}
-          </Button>
-        </>
-      )}
-    </div>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {!isEditing ? (
+          <>
+            <IconButton onClick={() => setIsEditing(true)}><EditIcon /></IconButton>
+            <IconButton onClick={() => onDelete(contact.id)}><DeleteIcon /></IconButton>
+            <IconButton onClick={() => onBookmark(contact.id)} color={contact.bookmarked ? "primary" : "default"}>
+              <BookmarkIcon />
+            </IconButton>
+          </>
+        ) : (
+          <form onSubmit={handleEditSubmit}>
+            <Button type="submit" variant="contained" size="small">Save</Button>
+            <Button 
+              type="button" 
+              variant="outlined" 
+              size="small" 
+              onClick={() => setIsEditing(false)} 
+              sx={{ ml: 1 }}
+            >
+              Cancel
+            </Button>
+          </form>
+        )}
+      </Box>
+    </Box>
   );
 }
 
