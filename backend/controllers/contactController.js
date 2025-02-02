@@ -45,9 +45,10 @@ const updateContact = (req, res) => {
     if (results.length === 0) {
       return res.status(404).json({ message: "Contact not found" });
     }
-
     const query =
-      "UPDATE contacts SET name=?, phone=?, address=?, label=?, avatar=?, bookmarked=? WHERE id=?";
+    "UPDATE contacts SET name=?, phone=?, address=?, label=?, avatar=?, bookmarked=? WHERE id=?";
+    console.log('Executing query:', query);
+  console.log('With params:', [name, phone, address, label, avatar, bookmarked, contactId]);
     db.query(
       query,
       [name, phone, address, label, avatar, bookmarked, contactId],
